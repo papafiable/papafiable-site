@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le test Papa Motivé ou Papa Fiable ? | Papa Fiable</title>
+<meta name="description" content="Réponds à 8 questions et découvre si tu es un Papa Motivé, un Papa en transition ou un Papa Fiable. Gratuit, environ 2 minutes.">
+<link rel="canonical" href="https://papafiable.fr/quiz/">
+<meta name="theme-color" content="#0a1f19">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Papa Fiable">
+<meta property="og:title" content="Le test Papa Motivé ou Papa Fiable ? | Papa Fiable">
+<meta property="og:description" content="Réponds à 8 questions et découvre si tu es un Papa Motivé, un Papa en transition ou un Papa Fiable. Gratuit, environ 2 minutes.">
+<meta property="og:url" content="https://papafiable.fr/quiz/">
+<meta property="og:image" content="https://papafiable.fr/assets/img/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="/assets/img/favicon-64.png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<link rel="preload" href="/assets/fonts/bricolage-grotesque-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/figtree-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/style.css">
+<script defer src="/js/main.js"></script>
+<script defer src="/js/quiz.js"></script>
+</head>
+<body class="qz-page">
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="Papa Fiable, accueil">
+      <img src="/assets/img/logo.png" alt="" width="42" height="42"><span>Papa <b>Fiable</b></span>
+    </a>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="/">Retour au site</a>
+      <a class="btn btn--gold btn--sm" href="/#rdv">Réserver mon bilan</a>
+    </nav>
+  </div>
+</header>
+<main id="contenu">
+<section class="qz-stage"><div class="wrap">
+<div class="qz-card" id="qz" data-endpoint="/.netlify/functions/quiz-lead">
+
+  <div class="qz-screen" data-screen="intro">
+    <span class="qz-kicker">Le test</span>
+    <h1>Papa Motivé ou Papa Fiable&nbsp;?</h1>
+    <p>8 questions pour voir où tu en es vraiment : sur ta discipline, ton alimentation et ton mouvement. Ton résultat s’affiche à la fin.</p>
+    <div class="qz-meta"><span>Environ 2 minutes</span><span>Gratuit</span><span>Sans inscription</span></div>
+    <p>Il n’y a pas de bonne ou de mauvaise réponse. Choisis celle qui te ressemble le plus <em>en ce moment</em>, pas celle que tu aimerais donner.</p>
+    <div><button type="button" class="btn btn--gold btn--lg" data-qz-start>Commencer le test</button></div>
+    <p class="qz-note">Tu préfères en parler directement&nbsp;? <a href="/#rdv">Réserve ton bilan offert</a>.</p>
+  </div>
+
+  <div class="qz-screen" data-screen="q" hidden>
+    <div class="qz-progress">
+      <span class="qz-count" aria-live="polite"></span>
+      <div class="qz-bar" role="progressbar" aria-valuemin="1" aria-valuemax="8" aria-valuenow="1" aria-label="Progression du test"><i></i></div>
+    </div>
+    <h2 class="qz-q"></h2>
+    <div class="qz-answers"></div>
+    <button type="button" class="qz-back" hidden>← Question précédente</button>
+  </div>
+
+  <div class="qz-screen qz-calc" data-screen="calc" hidden>
+    <div class="qz-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+    <p class="qz-calc-t">On calcule ton résultat…</p>
+  </div>
+
+  <div class="qz-screen" data-screen="result" hidden>
+    <span class="qz-kicker">Ton résultat</span>
+    <h2 class="qz-profile"></h2>
+    <div class="qz-score"><span class="qz-score-num"></span><span class="qz-note">sur 16 points</span></div>
+    <div class="qz-gauge">
+      <div class="qz-gauge-labels"><span>Papa Motivé</span><span>Papa Fiable</span></div>
+      <div class="qz-gauge-bar" role="img"><i></i></div>
+    </div>
+    <p class="qz-profile-text"></p>
+    <div class="qz-pillars"></div>
+    <div class="qz-weak"><h3 class="qz-weak-t"></h3><p class="qz-tip"></p>
+      <p class="qz-locked-h">Dans ton diagnostic détaillé, tu trouves&nbsp;:</p>
+      <ul class="qz-locked"></ul></div>
+
+    <div class="qz-mail">
+      <span class="qz-kicker">Ton diagnostic personnalisé (PDF)</span>
+      <h2>Reçois-le par e‑mail, gratuitement</h2>
+      <p class="qz-mail-for"></p>
+      <p>Il est rédigé pour ton profil et ton point à travailler. Rien d’obligatoire&nbsp;: tu peux aussi réserver directement ton bilan, juste en dessous.</p>
+      <form class="qz-form" novalidate>
+        <div class="qz-row">
+          <label class="f">Ton prénom<input type="text" name="firstname" autocomplete="given-name" maxlength="60"></label>
+          <label class="f">Ton e-mail<input type="email" name="email" autocomplete="email" required maxlength="160"></label>
+        </div>
+        <div class="qz-hp" aria-hidden="true"><label>Ne pas remplir<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+        <label class="qz-consent"><input type="checkbox" name="consent"><span>J’accepte de recevoir mon diagnostic et des e-mails de Papa Fiable. Je peux me désinscrire à tout moment. <a href="/politique-de-confidentialite.html" target="_blank" rel="noopener">Politique de confidentialité</a></span></label>
+        <button type="submit" class="btn btn--gold">Recevoir mon diagnostic</button>
+        <p class="qz-msg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+
+    <button type="button" class="qz-restart" data-qz-restart>Refaire le test</button>
+    <p class="qz-disclaimer">Ce test est un outil pédagogique, pas un outil médical. Il ne remplace pas l’avis d’un professionnel de santé.</p>
+  </div>
+
+</div>
+</div></section>
+
+<section class="qz-book" id="qz-book" hidden><div class="wrap">
+  <div class="qz-book-head">
+    <span class="qz-kicker">Pour aller plus loin</span>
+    <h2>On regarde ça ensemble ?</h2>
+    <p>Un bilan offert de 30 minutes, en visio. On regarde ta situation, et on voit honnêtement si l’accompagnement a du sens pour toi.</p>
+  </div>
+  <div class="booking" id="rdv">
+    <div class="cal-host" id="cal-host" data-url="https://calendly.com/antoine-papafiable/on-attaque"></div>
+    <p class="booking-note">Le calendrier ne s’affiche pas&nbsp;? <a href="https://calendly.com/antoine-papafiable/on-attaque" target="_blank" rel="noopener">Ouvre-le dans une nouvelle fenêtre</a>.</p>
+  </div>
+</div></section>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="/"><img src="/assets/img/logo.png" alt="" width="42" height="42"><span>Papa <b>Fiable</b></span></a>
+        <p>Accompagnement en ligne de 12 semaines pour les papas actifs qui veulent une forme physique fiable, sans dépendre de la motivation.</p>
+      </div>
+      <div>
+        <h4>Le site</h4>
+        <ul>
+          <li><a href="/#video">La vidéo</a></li>
+          <li><a href="/#methode">La méthode</a></li>
+          <li><a href="/#programme">Le programme</a></li>
+          <li><a href="/#histoire">Mon histoire</a></li>
+          <li><a href="/#faq">Questions fréquentes</a></li>
+          <li><a href="/quiz/">Le test Papa Fiable</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="/#rdv">Réserver un bilan</a></li>
+          <li>Écris-moi&nbsp;: <a href="mailto:antoine@papafiable.fr">antoine@papafiable.fr</a></li>
+          <li><a href="https://www.instagram.com/antoine.papafiable/" target="_blank" rel="noopener">Instagram @antoine.papafiable</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal-line">
+      <p>Papa Fiable est un accompagnement pédagogique (activité physique, alimentation, discipline personnelle). Il ne remplace pas un avis médical. Les résultats dépendent de l’implication de chacun et ne peuvent être garantis.</p>
+      <p>© 2026 Papa Fiable, Antoine Goudard, entreprise individuelle. &nbsp;·&nbsp; <a href="/mentions-legales.html">Mentions légales</a> &nbsp;·&nbsp; <a href="/cgv.html">CGV</a> &nbsp;·&nbsp; <a href="/politique-de-confidentialite.html">Politique de confidentialité</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
