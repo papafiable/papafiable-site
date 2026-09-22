@@ -45,9 +45,9 @@ async function ensureContact(email, firstName) {
   throw new Error(`contact: HTTP ${created.status}`);
 }
 
-async function findOrCreateTag(name) {
+async function searchTag(name, maxPages) {
   let after = null;
-  for (let page = 0; page < 10; page++) {
+  for (let page = 0; page < maxPages; page++) {
     const r = await api(`/tags?limit=100${after ? `&startingAfter=${after}` : ""}`);
     if (!r.ok) break;
     const items = itemsOf(r.data);
@@ -56,8 +56,18 @@ async function findOrCreateTag(name) {
     if (!items.length || !(r.data && r.data.hasMore)) break;
     after = items[items.length - 1].id;
   }
+  return null;
+}
+
+async function findOrCreateTag(name) {
+  const found = await searchTag(name, 30);
+  if (found) return found;
   const c = await api("/tags", { method: "POST", body: { name } });
   if (c.ok && c.data && c.data.id) return c.data.id;
+  // Le tag existe déjà probablement (409/422 côté Systeme.io) mais la recherche ci-dessus ne l'a pas trouvé
+  // (pagination, tri différent…) : on refait une recherche plus large avant d'abandonner.
+  const retry = await searchTag(name, 100);
+  if (retry) return retry;
   throw new Error(`tag ${name}: HTTP ${c.status}`);
 }
 
@@ -77,18 +87,24 @@ export default async (req) => {
   if (p.consent !== true) return json(400, { ok: false, error: "consent" });
   if (!PROFILES.includes(p.profile) || !PILLARS.includes(p.weakest)) return json(400, { ok: false, error: "data" });
 
+  let contactId;
   try {
-    const contactId = await ensureContact(email, firstName);
-    const tags = ["quiz-lead", `quiz-papa-${p.profile}`, `quiz-pilier-${p.weakest}`, `quiz-${p.profile}-${p.weakest}`];
-    for (const name of tags) {
-      const tagId = await findOrCreateTag(name);
-      const r = await api(`/contacts/${contactId}/tags`, { method: "POST", body: { tagId } });
-      // 4xx tolérés si le tag est déjà posé ; 5xx = vraie erreur
-      if (r.status >= 500) throw new Error(`addTag ${name}: HTTP ${r.status}`);
-    }
-    return json(200, { ok: true });
+    contactId = await ensureContact(email, firstName);
   } catch (e) {
     console.error("quiz-lead", e && e.message);
     return json(502, { ok: false, error: "upstream" });
   }
+
+  // Le contact est créé : c'est le plus important (le PDF se débloque côté site dès que ok:true).
+  // On pose ensuite les tags un par un, sans laisser le souci d'un seul tag annuler toute la réponse.
+  const tags = ["quiz-lead", `quiz-papa-${p.profile}`, `quiz-pilier-${p.weakest}`, `quiz-${p.profile}-${p.weakest}`];
+  for (const name of tags) {
+    try {
+      const tagId = await findOrCreateTag(name);
+      await api(`/contacts/${contactId}/tags`, { method: "POST", body: { tagId } });
+    } catch (e) {
+      console.error("quiz-lead tag", name, e && e.message);
+    }
+  }
+  return json(200, { ok: true });
 };
