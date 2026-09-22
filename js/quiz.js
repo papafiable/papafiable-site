@@ -186,7 +186,7 @@
         setTimeout(function () { fill.style.width = (result.pillars[k] / PILLARS[k].max * 100) + "%"; }, reduce ? 0 : 350);
       });
 
-      r.querySelector(".qz-weak-t").textContent = (result.profile === "fiable" ? "Ton point à affiner\u00a0: " : "Ton point à travailler\u00a0: ") + PILLARS[result.weakest].label.toLowerCase();
+      r.querySelector(".qz-weak-t").textContent = (result.profile === "fiable" ? "Ton point à affiner : " : "Ton point à travailler : ") + PILLARS[result.weakest].label.toLowerCase();
       r.querySelector(".qz-tip").textContent = TEASERS[result.weakest];
       var lk = r.querySelector(".qz-locked"); lk.innerHTML = "";
       LOCKED(p.name, PILLARS[result.weakest].label).forEach(function (t) { lk.appendChild(el("li", null, t)); });
@@ -225,7 +225,13 @@
         var done = function () {
           form.querySelectorAll("input,button").forEach(function (x) { x.disabled = true; });
           form.classList.add("is-done");
-          setMsg("C’est envoyé. Vérifie ta boîte mail dans les prochaines minutes (et tes courriers indésirables, au cas où).", true);
+          var dl = root.querySelector(".qz-download");
+          var link = root.querySelector(".qz-download-link");
+          if (dl && link) {
+            link.href = "https://papafiable.fr/documents/diagnostics/diagnostic-" + result.profile + "-" + result.weakest + ".pdf";
+            dl.hidden = false;
+          }
+          setMsg("C’est débloqué juste en dessous. Tu le reçois aussi par e-mail, au cas où tu voudrais le retrouver plus tard.", true);
         };
         if (mock) { setTimeout(done, 500); return; }
 
