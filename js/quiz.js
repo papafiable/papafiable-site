@@ -216,7 +216,7 @@
         var email = form.email.value.trim(), first = form.firstname.value.trim();
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { setMsg("Cette adresse e-mail ne semble pas valide.", false); form.email.focus(); return; }
         if (!form.consent.checked) { setMsg("Coche la case pour que je puisse t’envoyer ton diagnostic.", false); form.consent.focus(); return; }
-        submit.disabled = true; setMsg("Envoi en cours…");
+        submit.disabled = true; setMsg("Génération en cours…");
 
         var payload = {
           email: email, firstName: first, profile: result.profile, score: result.total, weakest: result.weakest,
@@ -231,7 +231,7 @@
             link.href = "https://papafiable.fr/documents/diagnostics/diagnostic-" + result.profile + "-" + result.weakest + ".pdf";
             dl.hidden = false;
           }
-          setMsg("C’est débloqué juste en dessous. Tu le reçois aussi par e-mail, au cas où tu voudrais le retrouver plus tard.", true);
+          setMsg("C’est prêt, juste en dessous.", true);
         };
         if (mock) { setTimeout(done, 500); return; }
 
