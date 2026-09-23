@@ -111,9 +111,10 @@ export default async (req) => {
 
   // Champ personnalisé url_diagnostic : permet à un seul e-mail de secours (déclenché sur quiz-lead)
   // de pointer vers le bon PDF pour chaque personne, sans créer un e-mail par combinaison.
-  // Valeur SANS "https://" : l'éditeur de lien de Systeme.io ajoute déjà ce préfixe automatiquement.
+  // Valeur avec "https://" complet : la variable est utilisée en texte brut dans l'e-mail (pas dans un
+  // champ de lien, qui encoderait les accolades {} et casserait la substitution avant l'envoi).
   try {
-    const pdfUrl = `papafiable.fr/documents/diagnostics/diagnostic-${p.profile}-${p.weakest}.pdf`;
+    const pdfUrl = `https://papafiable.fr/documents/diagnostics/diagnostic-${p.profile}-${p.weakest}.pdf`;
     await api(`/contacts/${contactId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/merge-patch+json" },
