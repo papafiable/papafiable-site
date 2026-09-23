@@ -5,7 +5,9 @@
        quiz-papa-motive | quiz-papa-transition | quiz-papa-fiable
        quiz-pilier-discipline | quiz-pilier-alimentation | quiz-pilier-mouvement
        quiz-<profil>-<pilier>          (9 combinaisons, ex. quiz-transition-alimentation : sert à envoyer le bon PDF)
-   - Dans Systeme.io, une règle d'automatisation « tag ajouté → inscrire à la campagne » lance la séquence d'e-mails. */
+   - Dans Systeme.io, une règle d'automatisation « tag ajouté → inscrire à la campagne » lance la séquence d'e-mails.
+   - Renseigne aussi le champ personnalisé Systeme.io `url_diagnostic` avec le lien exact du PDF de la personne
+     (utilisé par l'e-mail de secours générique, envoyé sur le tag quiz-lead). */
 
 const BASE = (process.env.SYSTEME_API_BASE || "https://api.systeme.io/api").replace(/\/$/, "");
 const PROFILES = ["motive", "transition", "fiable"];
@@ -14,10 +16,10 @@ const PILLARS = ["discipline", "alimentation", "mouvement"];
 const json = (status, body) =>
   new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" } });
 
-async function api(path, { method = "GET", body } = {}) {
+async function api(path, { method = "GET", body, headers } = {}) {
   const res = await fetch(BASE + path, {
     method,
-    headers: { "X-API-Key": process.env.SYSTEME_API_KEY, "Content-Type": "application/json", Accept: "application/json" },
+    headers: { "X-API-Key": process.env.SYSTEME_API_KEY, "Content-Type": "application/json", Accept: "application/json", ...headers },
     body: body ? JSON.stringify(body) : undefined,
   });
   let data = null;
@@ -106,5 +108,19 @@ export default async (req) => {
       console.error("quiz-lead tag", name, e && e.message);
     }
   }
+
+  // Champ personnalisé url_diagnostic : permet à un seul e-mail de secours (déclenché sur quiz-lead)
+  // de pointer vers le bon PDF pour chaque personne, sans créer un e-mail par combinaison.
+  try {
+    const pdfUrl = `https://papafiable.fr/documents/diagnostics/diagnostic-${p.profile}-${p.weakest}.pdf`;
+    await api(`/contacts/${contactId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/merge-patch+json" },
+      body: { fields: [{ slug: "url_diagnostic", value: pdfUrl }] },
+    });
+  } catch (e) {
+    console.error("quiz-lead field", e && e.message);
+  }
+
   return json(200, { ok: true });
 };
